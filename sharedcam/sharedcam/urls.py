@@ -27,6 +27,7 @@ urlpatterns = patterns('',
     url(r'^fake_sharecams$', 'sharedcam.views.fake_sharecams', name='fake_sharecams'),
 
     url(r'^registry/', include('registry.urls')),
+    url(r'^experimental/', include('experimental.urls')),
 
 
     url(r'^admin/', include(admin.site.urls)),

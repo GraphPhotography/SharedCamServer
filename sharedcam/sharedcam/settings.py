@@ -35,6 +35,7 @@ SITE_ID = 1
 INSTALLED_APPS = (
     'sharedcam',
     'registry',
+    'experimental',
 
     'django.contrib.admin',
     'django.contrib.auth',
