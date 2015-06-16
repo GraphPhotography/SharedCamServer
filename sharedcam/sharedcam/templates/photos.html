@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}SharedCam{% endblock %}
+{% block navtitle %}SharedCam{% endblock %}
+{% block jsext %}
+
+<link rel="stylesheet" href="{% static "css/grid.css" %}" type="text/css" />
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+    window.setInterval(get_recent, 2000);
+});
+
+{% if newest_photo_hash %}
+var newest_photo_hash = "{{newest_photo_hash}}";
+{% else %}
+var newest_photo_hash = "";
+{% endif %}
+
+function get_recent(){
+    var url = "/recent/" + newest_photo_hash;
+    {% if tag %}
+        url += "?tag={{tag}}";
+    {% endif %}
+    $.get( url, function( data ) {
+      $( "#recent" ).prepend( data );
+      
+      newest_photo_hash = $("#recent div")[0].id;
+      console.log( "Load was performed. New max content id", newest_photo_hash );
+    });
+}
+
+</script>
+
+
+
+<style type="text/css">
+   
+</style>
+
+{% endblock %}
+{% block content %}
+
+<h2>
+    Photos 
+    <br /><small>{{description}}</small>
+</h2>
+
+<div id="recent">
+    {% include 'grid.html' %}
+</div>
+
+{% endblock %}

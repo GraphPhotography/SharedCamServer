@@ -1,0 +1,2 @@
+DEPLOY_SERVER = '' # where is this being deployed?
+JUMPCHAT_SERVER = 'jumpch.at' # custom jumpchat server

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}SharedCam{% endblock %}
+{% block navtitle %}SharedCam{% endblock %}
+{% block jsext %}
+
+<script type="text/javascript">
+
+</script>
+
+<style type="text/css">
+   
+</style>
+
+{% endblock %}
+{% block content %}
+
+
+<!--
+<h3>Photos</h3>
+
+<div class="row">
+{% for p in hashphotos %}
+<div class="col-lg-4"> 
+    <div class="well" style="height: 300px;">
+        <img src="{{ MEDIA_URL }}{{p.thumbnail}}" style="max-height: 80%; max-width: 100%;" />
+        <h4>{{p.hexdigest}} <br /><small>uploaded {{p.date_uploaded|timesince}} ago</small></h4>
+        <h5>
+            {% for t in p.tags.all %}
+            #{{t.text}} 
+            {% endfor %}
+        </h5>
+    </div>
+</div>
+{% endfor %}
+</div>
+-->
+
+<div>
+    <h3>Example curl command</h3>
+<pre>
+curl -F "photo=@thefile.jpg" -F "tag_string=robots,rovers" {{server}}/add
+</pre>
+    <hr />
+</div>
+
+
+<div class="well">
+<h3>Upload a new image</h3>
+<form enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+    <table class="table table-bordered">
+    {{ form }}
+    <tr><td colspan=2><input type="submit" value="Submit" /></td></tr>
+    </table>
+</form>
+</div>
+
+{% endblock %}

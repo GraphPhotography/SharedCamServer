@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}SharedCam{% endblock %}
+{% block navtitle %}SharedCam{% endblock %}
+{% block jsext %}
+
+<link rel="stylesheet" href="{% static "css/grid.css" %}" type="text/css" />
+
+<script type="text/javascript">
+
+</script>
+
+<style type="text/css">
+    #photo_frame > img {
+        width: 100%;
+        border: 2px solid black;
+    }
+</style>
+
+{% endblock %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>
+            Photo <small>{{photo.hexdigest}}</small>
+        </h2>
+
+        <h5>
+            <a href="{{ MEDIA_URL }}{{photo.photo}}">full size</a> | 
+            <a href="{{ MEDIA_URL }}{{photo.thumbnail}}">thumbnail</a>
+            {% if request.user.is_authenticated %} 
+                | <a href="/admin/photopal/hashphoto/{{photo.hexdigest}}">admin</a>
+            {% endif %}
+        </h5>
+
+        <h5>Source: <i>{{photo.print_source}}</i></h5>
+
+        <hr />
+        <h4>Tags:</h4>
+        <div>
+            {% for t in photo.tags.all %}
+            <a href="{% url 'tag' t.text %}" class="btn btn-sm btn-default rating">
+                <span class="count">#{{t.text}}</span>
+            </a>
+            {% endfor %}
+        </div>
+
+        <hr />
+        <h4>Metadata:</h4>
+        <pre>{{photo.metadata}}</pre>
+    </div>
+
+    <div id="photo_frame" class="col-md-8">
+        <img src="{{ MEDIA_URL }}{{photo.photo}}" />
+    </div>
+</div>
+
+{% endblock %}
