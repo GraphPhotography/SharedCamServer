@@ -5,3 +5,4 @@ photostore
 photostore/*
 mydatabase.sqlite
 sharedcam/sharedcam/settings_custom.py
+README.html

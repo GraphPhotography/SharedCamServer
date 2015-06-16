@@ -9,3 +9,6 @@ Acceps new images at `<url>/add`
 
 ## App #2: `registry`
 Manages a registry of realtime guides, available through a custom Jumpchat mobile app.
+
+## App #3: `experimental`
+Experimental/spare app for exploratory proramming and prototyping.
