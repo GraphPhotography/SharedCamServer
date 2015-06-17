@@ -12,7 +12,7 @@ from django.utils import timezone
 from datetime import datetime
 from django.db.models import Max
 from django.utils.dateformat import format
-
+from django.contrib.auth import logout as auth_logout
 
 from models import *
 from forms import *
@@ -24,7 +24,15 @@ def index(request):
         newest_photo_hash = photos[0].hexdigest
     else:
         newest_photo_hash = None
+
     return render_to_response('index.html', locals(), RequestContext(request))
+
+def login(request):
+    return render_to_response('login.html', locals(), RequestContext(request))
+
+def logout(request):
+    auth_logout(request)
+    return redirect('index')
 
 def photos(request):
     photos = HashPhoto.objects.all().order_by('-date_uploaded')

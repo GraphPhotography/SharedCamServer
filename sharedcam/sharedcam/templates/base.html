@@ -35,7 +35,12 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav pull-right">
-                    
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'index' %}">Logged in as {{ user }}</a></li>
+                        <li><a href="{% url 'logout' %}">Log out</a></li>
+                    {% else %}
+                        <li><a href="{% url 'social:begin' 'twitter' %}?next={{ request.path }}">Login with Twitter</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </div>

@@ -29,6 +29,11 @@ urlpatterns = patterns('',
     url(r'^registry/', include('registry.urls')),
     url(r'^experimental/', include('experimental.urls')),
 
-
     url(r'^admin/', include(admin.site.urls)),
+
+    url('', include('social.apps.django_app.urls', namespace='social')),
+    url(r'^login/$', 'sharedcam.views.login', name='login'),
+    url(r'^logout/$', 'sharedcam.views.logout', name='logout'),
+    
+
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
