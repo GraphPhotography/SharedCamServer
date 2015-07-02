@@ -20,7 +20,7 @@ class HashPhoto(models.Model):
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
     metadata = models.TextField(null=True, blank=True)
-    hidden = models.BooleanField(default=False)
+    hidden = models.BooleanField(default=True)
 
     # tags
     tags = models.ManyToManyField(Tag)
@@ -45,6 +45,8 @@ class HashPhoto(models.Model):
         return settings.MEDIA_URL + str(self.photo)
     
     def create_thumbnail(self, orientation=None, front_camera_str=None, rotation=None):
+        print "creating thumbnail"
+
         # original code for this method came from
         # http://snipt.net/danfreak/generate-thumbnails-in-django-with-pil/
 
@@ -83,3 +85,8 @@ class HashPhoto(models.Model):
         # Save the thumbnail
         thumb_filename = str(self.photo).replace(".jpg", "-thumb.jpg")
         image.save(thumb_filename, PIL_TYPE)
+
+        print "making this picture not hidden anymore", self.hidden
+        self.hidden = False
+        self.save()
+        print "hidden value:", self.hidden

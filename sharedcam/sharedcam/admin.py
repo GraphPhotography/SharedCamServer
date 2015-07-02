@@ -8,4 +8,4 @@ class TagAdmin(admin.ModelAdmin):
 
 @admin.register(HashPhoto)
 class HashPhotoAdmin(admin.ModelAdmin):
-    pass
+    ordering = ('-date_uploaded',)
