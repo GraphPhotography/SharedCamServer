@@ -37,8 +37,8 @@ function gotCams(cams)
       if (cam.room !== "null"){
         var dt = t0 - cam.lastTime;
         var delta = Math.floor(dt);
-        var url = "http://jumpchat.paldeploy.com/polly/?room="+cam.room;
-        var link = '<a href="'+url+'">'+cam.name+'</a>';
+        var url = "http://jumpchat.paldeploy.com/sharedcam/?room="+cam.room;
+        var link = '<a href="'+url+'" target="_blank">'+cam.name+'</a>';
         var join_button = "<a href='"+url+"' class='btn btn-info'>join</a>";
         
         var tags = "";
