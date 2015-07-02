@@ -39,7 +39,7 @@ function gotCams(cams)
         var delta = Math.floor(dt);
         var url = "http://jumpchat.paldeploy.com/sharedcam/?room="+cam.room;
         var link = '<a href="'+url+'" target="_blank">'+cam.name+'</a>';
-        var join_button = "<a href='"+url+"' class='btn btn-info'>join</a>";
+        var join_button = "<a href='"+url+"' target='_blank' class='btn btn-info'>join</a>";
         
         var tags = "";
         for (var t_id in cam.tags){
