@@ -34,32 +34,34 @@ function gotCams(cams)
                  "<tbody>\n";
    for (var i in cams.rooms) {
       var cam = cams.rooms[i];
-      var dt = t0 - cam.lastTime;
-      var delta = Math.floor(dt);
-      var url = "http://jumpchat.paldeploy.com/polly/?room="+cam.room;
-      var link = '<a href="'+url+'">'+cam.name+'</a>';
-      var join_button = "<a href='"+url+"' class='btn btn-info'>join</a>";
-      
-      var tags = "";
-      for (var t_id in cam.tags){
-        var t = cam.tags[t_id];
-        tags += "<a href='{% url "photos" %}/" + t + "'>#" + t + "</a> "
-      }
+      if (cam.room !== "null"){
+        var dt = t0 - cam.lastTime;
+        var delta = Math.floor(dt);
+        var url = "http://jumpchat.paldeploy.com/polly/?room="+cam.room;
+        var link = '<a href="'+url+'">'+cam.name+'</a>';
+        var join_button = "<a href='"+url+"' class='btn btn-info'>join</a>";
+        
+        var tags = "";
+        for (var t_id in cam.tags){
+          var t = cam.tags[t_id];
+          tags += "<a href='{% url "photos" %}/" + t + "'>#" + t + "</a> "
+        }
 
-      if (cam.state > 1){
-         link = cam.name;
-         join_button = "<a href='"+url+"' class='btn btn-info' disabled>join</a>";
-      }
+        if (cam.state > 1){
+           link = cam.name;
+           join_button = "<a href='"+url+"' class='btn btn-info' disabled>join</a>";
+        }
 
-      var row = " <tr>\n" +
-                "  <td> "+join_button+"</td>\n" +
-                "  <td> "+link+     " </td>\n" +
-                "  <td> "+tags+ " </td>\n" +
-                "  <td> "+cam.room+ " </td>\n" +
-                "  <td> "+delta+    " </td>\n" +
-                "  <td> "+cam.state+" </td>\n"+
-                " </tr>\n";
-      tstr += row;
+        var row = " <tr>\n" +
+                  "  <td> "+join_button+"</td>\n" +
+                  "  <td> "+link+     " </td>\n" +
+                  "  <td> "+tags+ " </td>\n" +
+                  "  <td> "+cam.room+ " </td>\n" +
+                  "  <td> "+delta+    " </td>\n" +
+                  "  <td> "+cam.state+" </td>\n"+
+                  " </tr>\n";
+        tstr += row;
+      }
    }
    tstr += "</tbody>\n</table>";
    $("#cams").html(tstr)
