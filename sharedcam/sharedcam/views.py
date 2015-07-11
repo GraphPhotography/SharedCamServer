@@ -113,7 +113,7 @@ def testphoto_page(request):
 
 @csrf_exempt
 def process_photo(request):
-    # curl -F "photo=@7468481122_e1466490fa_m.jpg" -F "tag_string=jpeg" localhost:8000/testphoto_curl
+    # curl -F "photo=@7468481122_e1466490fa_m.jpg" -F "tag_string=jpeg" 127.0.0.1:8000/add
     response_data = {}
     form_result = "Nothing happened with the form"
 
@@ -124,9 +124,11 @@ def process_photo(request):
         if form.is_valid():
             form_result += " photo form saved "
             new_photo = form.save(request.POST)
+            base_url = request.build_absolute_uri().replace("/add", "")
             response_data["hash"] = new_photo.hexdigest
             response_data["path"] = new_photo.url()
-            response_data["url"] = request.build_absolute_uri().replace("/add", "") + new_photo.url()
+            response_data["viewing_url"] = base_url + reverse('sharedcam.views.photo', args=(new_photo.hexdigest,))
+            response_data["url"] = base_url + new_photo.url()
         else:
             form_result = "form is invalid"
 
