@@ -9,4 +9,6 @@ urlpatterns = patterns('',
     url(r'^reg_remove/$', 'registry.views.reg_remove'),
     url(r'^reg/$', 'registry.views.reg'),
     url(r'^regp/$', 'registry.views.regp'),
+    url(r'^reg_config/$', 'registry.views.reg_config'),
 )
+

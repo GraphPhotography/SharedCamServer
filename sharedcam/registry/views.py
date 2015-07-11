@@ -14,9 +14,9 @@ from datetime import date
 from django.conf import settings
 #import jumpchat.utils
 import json
+import os
 
-
-
+@csrf_exempt
 def reg_remove(request):
     import ShareCamReg
     q = request.GET
@@ -24,6 +24,7 @@ def reg_remove(request):
     jsonStr = ShareCamReg.regRemove(request, params, q)
     return HttpResponse(jsonStr, content_type="application/json")
 
+@csrf_exempt
 def reg_connect(request):
     import ShareCamReg
     q = request.GET
@@ -31,6 +32,7 @@ def reg_connect(request):
     url = ShareCamReg.regConnect(request, params, q)
     return HttpResponseRedirect(url)
 
+@csrf_exempt
 def reg_query(request):
     import ShareCamReg
     q = request.GET
@@ -38,6 +40,25 @@ def reg_query(request):
     jsonStr = ShareCamReg.regQuery(request, params, q)
     return HttpResponse(jsonStr, content_type="application/json")
 
+@csrf_exempt
+def reg_config(request):
+    q = request.GET
+    config = {'type': 'random', 'serverName': settings.JUMPCHAT_SERVER }
+    if "name" in q:
+        name = q['name']
+        path = "registry/config/%s.json" % (name,)
+        config['name'] = name
+        try:
+            cfg = json.loads(file(path).read())
+            for key in cfg:
+                config[key] = cfg[key]
+            config['configPath'] = path
+        except:
+            pass
+    jsonStr = json.dumps(config)
+    return HttpResponse(jsonStr, content_type="application/json")
+
+@csrf_exempt
 def reg(request):
     import ShareCamReg
     template_name='reg.html'
