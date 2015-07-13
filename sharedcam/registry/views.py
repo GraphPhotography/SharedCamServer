@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, render_to_response
 from django.template import RequestContext
 #from socketio import socketio_manage
 from django.http import HttpResponse, HttpResponseRedirect, Http404
@@ -57,6 +57,15 @@ def reg_config(request):
             pass
     jsonStr = json.dumps(config)
     return HttpResponse(jsonStr, content_type="application/json")
+
+@csrf_exempt
+def reg_becomeguide(request):
+    return render_to_response("becomeguide.html", locals(), RequestContext(request))
+
+@csrf_exempt
+def reg_notification(request):
+    return render_to_response("notification.html", locals(), RequestContext(request))
+
 
 @csrf_exempt
 def reg(request):

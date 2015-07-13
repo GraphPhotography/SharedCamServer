@@ -10,5 +10,7 @@ urlpatterns = patterns('',
     url(r'^reg/$', 'registry.views.reg'),
     url(r'^regp/$', 'registry.views.regp'),
     url(r'^reg_config/$', 'registry.views.reg_config'),
+    url(r'^reg_becomeguide/$', 'registry.views.reg_becomeguide'),
+    url(r'^reg_notification/$', 'registry.views.reg_notification'),
 )
 

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
-{% block title %}SharedCam{% endblock %}
-{% block navtitle %}SharedCam{% endblock %}
+{% block title %}ShareCam{% endblock %}
+{% block navtitle %}ShareCam{% endblock %}
 {% block jsext %}
 
 <link rel="stylesheet" href="{% static "css/grid.css" %}" type="text/css" />
@@ -19,7 +19,7 @@ function timerFun()
 function gotCams(cams)
 {
    var t0 = Date.now()/1000.0;
-   console.log("cams: ", cams);
+   console.log("cams: ", JSON.stringify(cams));
    var tstr = "<table class='table table-border'>\n"+
                  "<thead>\n"+
                  " <tr>\n"+
@@ -114,5 +114,8 @@ function get_recent(){
 
 <h2>Test Links</h2>
 <h4><a href="{% url 'testphoto_page' %}">upload page</a></h4>
+<h4><a href="http://jumpchat.paldeploy.com/static/JumpShareCam.apk">ShareCam APK</a></h4>
+<h4><a href="/registry/reg_becomeguide/">become web guide</a></h4>
+<h4><a href="/registry/reg_notification/">setup notification</a></h4>
 
 {% endblock %}
