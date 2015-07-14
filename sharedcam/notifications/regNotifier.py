@@ -13,13 +13,20 @@ QUIET = "Quiet"
 ACTIVE = "Active"
 
 class Notification:
-    def __init__(self, name, pattern=None, email=None, sms=None, jsonPath=None):
+    def __init__(self, name, pattern=None, email=None, sms=None,
+                 phone=None, sms_carrier=None, jsonPath=None,
+                 active=False, notifyByEmail=False, notifyBySMS=False):
         self.name = name
         self.email = email
-        self.sms = sms
+        self.phone = phone
+        self.sms_carrier = sms_carrier
         self.pattern = pattern
         self.jsonPath = jsonPath
+        self.active = active
+        self.notifyByEmail = notifyByEmail
+        self.notifyBySMS = notifyBySMS
         self.prevState = QUIET
+        self.active = active
         self.mtime = time.time()
 
     def observe(self, regStatus):
@@ -40,14 +47,21 @@ class Notification:
         return False
 
     def notify(self):
+        if not self.active:
+            print "Skipping notification for %s because it is not activated" % self.name
+            return
         print "Notifying %s" % self.name
         text = "Guides are available"
-        if self.email:
+        if self.notifyByEmail:
             print " sending email to", self.email
             regSendMessage.sendMail(text, self.email)
-        if self.sms:
-            print " sending SMS to", self.sms
-            regSendMessage.sendSMS(text, self.sms)
+        else:
+            print  " email notification not activated"
+        if self.notifyBySMS:
+            print " sending SMS to", self.phone, self.sms_carrier
+            regSendMessage.sendSMS(text, self.phone, self.sms_carrier)
+        else:
+            print  " SMS notification not activated"
 
 
 class NotificationDB:
@@ -78,8 +92,13 @@ class NotificationDB:
             print "*** Ignoring record %s with name not matching filename %s" % (name, fname)
             return
         ntf = Notification(name=name,
-                           email = obj['email'], 
-                           sms = obj['sms'])
+                           active = obj.get("active", False),
+                           email = obj.get('email'),
+                           phone = obj.get('phone'),
+                           notifyBySMS = obj.get('notifyBySMS', False),
+                           notifyByEmail = obj.get('notifyByEmail', False),
+                           sms_carrier = obj.get('sms_carrier'),
+                           jsonPath = jsonPath)
         if prevNtf == None:
             print "%s - Adding new notfication" % name
             self.addNotification(ntf)
@@ -101,11 +120,11 @@ class NotificationDB:
         """
         First remove notifications whose files have vanished.
         """
-        print "============================================="
         print "checking for updates to notification records"
         for ntf in list(self.notifications.values()):
+            #print "ntf", ntf.jsonPath
             if ntf.jsonPath and not os.path.exists(ntf.jsonPath):
-                print "Removing ntf"
+                print "Removing ntf", ntf.name, ntf.jsonPath
                 del self.notifications[ntf.name]
 
         print "NotificationDB checkUpdates"
@@ -135,14 +154,16 @@ class RegistryWatcher:
         print "Watcher started!"
         while self.keepWatching:
             try:
+                print "============================================="
+                print time.ctime()
                 self.ndb.checkUpdates()
+                print "----------------------------------------"
                 self.update()
             except:
                 traceback.print_exc()
             time.sleep(UPDATE_INTERVAL)
 
     def update(self):
-        print "----------------------------------------"
         statusText = urllib2.urlopen(STATUS_URL).read()
         status = json.loads(statusText)
         print status
@@ -152,13 +173,6 @@ class RegistryWatcher:
 
 if __name__ == '__main__':
    ndb = NotificationDB()
-   """
-   ndb.addNotification(
-       Notification("don", 
-                    email="donkimber@gmail.com",
-                    sms=("6502196316","ATT")))
-   ndb.addNotification(Notification("bob"))
-   """
    rw = RegistryWatcher(ndb)
    rw.run()
 

@@ -12,5 +12,8 @@ urlpatterns = patterns('',
     url(r'^reg_config/$', 'registry.views.reg_config'),
     url(r'^reg_becomeguide/$', 'registry.views.reg_becomeguide'),
     url(r'^reg_notification/$', 'registry.views.reg_notification'),
+    url(r'^reg_setNotification/$', 'registry.views.reg_setNotification'),
+    url(r'^reg_getNotification/$', 'registry.views.reg_getNotification'),
+    url(r'^reg_delNotification/$', 'registry.views.reg_delNotification'),
 )
 

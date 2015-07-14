@@ -1,19 +1,38 @@
 
+import sys
 import traceback
 import smtplib
 
-FROM_ADDR = "wviewsmail@gmail.com"
-PASSWORD = "wviews1234"
+ERRMSG = """To use regSendMessage.py you must put a REG_CONFIG.py
+somewhere in the python search path, and define FROM_ADDR and PASSWORD
+"""
+
+try:
+    from REG_CONFIG import *
+except:
+    print ERRMSG
+    sys.exit(1)
+
+#FROM_ADDR = "wviewsmail@gmail.com"
+#PASSWORD = "wviews1234"
 
 GATEWAYS = {
    'att': "txt.att.net",
    "cricket": "mms.mycricket.com",
-   "pprint": "messaging.sprintpcs.com",
+   "sprint": "messaging.sprintpcs.com",
    "tmobile": "tmomail.net",
    "uscellular": "email.uscc.net",
    "verizon": "vtext.com",
    "virgin": "vmobi.com",
 }
+
+def fixNumber(number):
+    s = "%s" % number
+    s = s.replace(",", "")
+    s = s.replace("(", "")
+    s = s.replace(")", "")
+    s = s.replace(" ", "")
+    return s
 
 def getGateway(carrier):
     carrier = carrier.lower()
@@ -26,7 +45,7 @@ def getGateway(carrier):
 def sendSMS_(text, number, carrier):
    gateway = getGateway(carrier)
    fromAddr = FROM_ADDR
-   toAddr = "%s@%s" % (number, gateway)
+   toAddr = "%s@%s" % (fixNumber(number), gateway)
    print toAddr
    msg = "\r\n".join([
            "From: %s" % fromAddr,
